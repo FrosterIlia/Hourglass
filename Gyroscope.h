@@ -16,7 +16,7 @@ class Gyroscope {
       mpu.dmpInitialize();
       mpu.setDMPEnabled(true);
 
-      //mpu.CalibrateAccel(6);
+      mpu.CalibrateAccel(6);
 
       
     }
@@ -36,14 +36,14 @@ class Gyroscope {
       }
     }
 
-    float getRotationX(){
-      return ypr[2];
+    int getRotationX(){
+      return degrees(ypr[2]);
     }
-    float getRotationY(){
-      return ypr[1];
+    int getRotationY(){
+      return degrees(ypr[1]);
     }
-    float getRotationZ(){
-      return ypr[0];
+    int getRotationZ(){
+      return degrees(ypr[0]);
     }
     
   private:
