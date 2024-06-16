@@ -48,7 +48,7 @@ void loop() {
   if (main_timer.isReady()) {
     //clear_matrix();
 
-    move();
+    move_all();
     // set_pixel(1, 1, 1);
 
     //draw_particles();
@@ -56,6 +56,6 @@ void loop() {
   }
 
   if (test_timer.isReady()) {
-    Serial.println(get_gravity(gyro.getRotationX()));
+    //Serial.println(get_gravity(gyro.getRotationX()));
   }
 }
