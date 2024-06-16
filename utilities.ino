@@ -4,7 +4,7 @@ void gyro_interrupt() {
 
 uint8_t get_gravity(int angle) {  // 4 - down
 
-  return (angle + 180) / 45;
+  return (angle + 180 + 11) / 22.5;
 }
 
 // void draw_particles() {
