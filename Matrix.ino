@@ -20,6 +20,11 @@ bool get_pixel(uint8_t x, uint8_t y){
   return buffer[MATRIX_SIZE - x - 1] & (1 << y) ? 1 : 0;
 }
 
+bool get_pixel_new(uint8_t x, uint8_t y){
+  if (x < 0 || x > MATRIX_SIZE - 1 || y < 0 || y > MATRIX_SIZE - 1) return true;
+  return new_buffer[MATRIX_SIZE - x - 1] & (1 << y) ? 1 : 0;
+}
+
 void clear_matrix(){
   for (uint8_t i = 0; i < MATRIX_SIZE; i++){
     new_buffer[i] = 0;

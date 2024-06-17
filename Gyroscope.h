@@ -16,7 +16,7 @@ class Gyroscope {
       mpu.dmpInitialize();
       mpu.setDMPEnabled(true);
 
-      mpu.CalibrateAccel(6);
+      // mpu.CalibrateAccel(6);
 
       
     }

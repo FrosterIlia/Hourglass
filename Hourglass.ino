@@ -11,7 +11,7 @@
 
 #define PERIOD 100
 
-#define PARTICLE_AMOUNT 100
+#define PARTICLE_AMOUNT 30
 
 
 Gyroscope gyro;
@@ -20,8 +20,6 @@ MD_MAX72XX matrix = MD_MAX72XX(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
 uint8_t buffer[8];
 uint8_t new_buffer[8];
 
-//Particle sand[PARTICLE_AMOUNT];
-
 
 void setup() {
   Serial.begin(9600);
@@ -29,8 +27,12 @@ void setup() {
 
   matrix.begin();
   clear_matrix();
-  set_pixel(1, 0, 1);
-  set_pixel(1, 1, 1);
+
+
+
+  // set_pixel(0, 0, 1);
+  // set_pixel(1, 0, 1);
+  // set_pixel(1, 1, 1);
   update_matrix();
   attachInterrupt(0, gyro_interrupt, RISING);
   // for (uint8_t i = 0; i < PARTICLE_AMOUNT; i++){
@@ -47,15 +49,15 @@ void loop() {
 
   if (main_timer.isReady()) {
     //clear_matrix();
-
+    // Serial.println(get_gravity(gyro.getRotationX()));
     move_all();
     // set_pixel(1, 1, 1);
 
-    //draw_particles();
+    // draw_particles();
     update_matrix();
   }
 
   if (test_timer.isReady()) {
-    //Serial.println(get_gravity(gyro.getRotationX()));
+    set_pixel(7, 0, 1);
   }
 }
