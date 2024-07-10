@@ -11,14 +11,20 @@ class Gyroscope {
 
       _mpuFlag = false;  // interrupt flag
 
-      //initialize mpu and interrupts
-      mpu.initialize();
-      mpu.dmpInitialize();
-      mpu.setDMPEnabled(true);
+    }
 
-      mpu.CalibrateAccel(6);
-
+    void begin(){
+      do{
+        //initialize mpu and interrupts
+        mpu.reset();
+        mpu.resetDMP();
+        mpu.initialize();
+        mpu.dmpInitialize();
+        mpu.setDMPEnabled(true);
+      } while (!mpu.testConnection());
       
+      //Serial.println(getRotationX());
+      // mpu.CalibrateAccel(6);
     }
 
     void dmpReady() { // interrupt ready
