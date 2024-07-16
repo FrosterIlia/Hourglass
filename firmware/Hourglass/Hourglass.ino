@@ -39,17 +39,11 @@ void setup() {
   clear_matrix(1);
   clear_matrix(2);
 
-  
 
-  // set_pixel(0, 0, 1);
-  // set_pixel(1, 0, 1);
-  // set_pixel(1, 1, 1);
   update_matrix(1);
   update_matrix(2);
   attachInterrupt(0, gyro_interrupt, RISING);
-  // for (uint8_t i = 0; i < PARTICLE_AMOUNT; i++){
-  //   sand[i] = Particle(i, 1);
-  // }
+
 }
 
 Timer test_timer(1000);
@@ -60,12 +54,9 @@ void loop() {
   gyro.tick();
 
   if (main_timer.isReady()) {
-    //clear_matrix();
     move_all(1);
     move_all(2);
-    // set_pixel(1, 1, 1);
 
-    // draw_particles();
     update_matrix(1);
     update_matrix(2);
   }
