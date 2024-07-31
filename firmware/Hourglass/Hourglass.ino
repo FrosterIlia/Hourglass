@@ -12,9 +12,12 @@
 #define CLK_PIN2 7
 #define CS_PIN2 5
 
-#define PERIOD 100
+#define MAIN_PERIOD 100
+#define CLOCK_PERIOD 1350 // 1 minute
 
-#define PARTICLE_AMOUNT 30
+#define OFFSET 14
+
+#define PARTICLES 50
 
 
 Gyroscope gyro;
@@ -29,6 +32,7 @@ uint8_t new_buffer2[MATRIX_SIZE];
 
 
 void setup() {
+  randomSeed(analogRead(A0));
   Serial.begin(9600);
   Wire.begin();
 
@@ -39,30 +43,39 @@ void setup() {
   clear_matrix(1);
   clear_matrix(2);
 
+  fill();
 
   update_matrix(1);
   update_matrix(2);
-  attachInterrupt(0, gyro_interrupt, RISING);
-
 }
 
-Timer test_timer(1000);
-Timer main_timer(PERIOD);
+Timer main_timer(MAIN_PERIOD);
+Timer clock_timer(CLOCK_PERIOD);
 
 void loop() {
-
-  gyro.tick();
 
   if (main_timer.isReady()) {
     move_all(1);
     move_all(2);
-
     update_matrix(1);
     update_matrix(2);
   }
 
-  if (test_timer.isReady()) {
-    set_pixel(7, 0, 1, 1);
-    set_pixel(0, 1, 1, 2);
+  if (clock_timer.isReady()) {
+    uint8_t top_matrix = get_top_matrix(get_gravity(gyro.get_angle()));
+    Serial.println(top_matrix);
+
+    if (top_matrix == 1) {
+      if (get_pixel(7, 0, 1) && !get_pixel(0, 0, 2)) {
+        set_pixel(7, 0, 0, 1);
+        set_pixel(0, 0, 1, 2);
+      }
+    } else if (top_matrix == 2) {
+      if (get_pixel(0, 0, 2) && !get_pixel(7, 0, 1)) {
+        set_pixel(7, 0, 1, 1);
+        set_pixel(0, 0, 0, 2);
+      }
+    }
   }
+
 }

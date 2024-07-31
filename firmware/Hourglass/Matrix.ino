@@ -50,3 +50,4 @@ void clear_matrix(uint8_t matrix_number) {
     }
   }
 }
+

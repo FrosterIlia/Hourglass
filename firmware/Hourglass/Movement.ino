@@ -20,8 +20,11 @@ const int8_t GRAVITY_CHECK[16][3] = { { 0, -2, -2 },  // 0   // -1 means no chec
 
 
 void move_all(uint8_t matrix_number) {
-  uint8_t gravity = get_gravity(gyro.getRotationX());
-
+  uint8_t gravity = get_gravity(gyro.get_angle());
+  if (matrix_number == 2) {
+    if (gravity < 4) gravity += 16;
+    gravity -= 4;
+  }
   for (uint8_t i = 0; i < MATRIX_SIZE; i++) {
     for (uint8_t j = 0; j < MATRIX_SIZE; j++) {
       if (get_pixel(i, j, matrix_number)) {
@@ -39,8 +42,8 @@ int8_t get_movement_direction(uint8_t x, uint8_t y, uint8_t gravity, uint8_t mat
 
       int8_t check_order_value = random(0, 2) ? 1 : -1;
 
-      if (!isObstacle(x, y, GRAVITY_CHECK[gravity][0] + check_order_value, matrix_number)) return GRAVITY_CHECK[gravity][0] + check_order_value;
-      if (!isObstacle(x, y, GRAVITY_CHECK[gravity][0] - check_order_value, matrix_number)) return GRAVITY_CHECK[gravity][0] - check_order_value;
+      if (!isObstacle(x, y, (GRAVITY_CHECK[gravity][0] + check_order_value) % 8, matrix_number)) return GRAVITY_CHECK[gravity][0] + check_order_value;
+      if (!isObstacle(x, y, (GRAVITY_CHECK[gravity][0] - check_order_value) % 8, matrix_number)) return GRAVITY_CHECK[gravity][0] - check_order_value;
 
       break;
     }

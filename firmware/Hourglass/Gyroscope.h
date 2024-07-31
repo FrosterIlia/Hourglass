@@ -1,62 +1,54 @@
 #pragma once
 #include <Arduino.h>
 #include "I2Cdev.h"
-#include "MPU6050_6Axis_MotionApps20.h"
+#include "MPU6050.h"
 
 class Gyroscope {
-  public:
-    Gyroscope() {
-      init();
+public:
+  Gyroscope() {
+    init();
 
+  }
 
-      _mpuFlag = false;  // interrupt flag
+  void begin() {
 
-    }
+    //initialize mpu 
+    mpu.initialize();
 
-    void begin(){
-      do{
-        //initialize mpu and interrupts
-        mpu.reset();
-        mpu.resetDMP();
-        mpu.initialize();
-        mpu.dmpInitialize();
-        mpu.setDMPEnabled(true);
-      } while (!mpu.testConnection());
-      
-      //Serial.println(getRotationX());
-      // mpu.CalibrateAccel(6);
-    }
+    calibrate();
+  }
 
-    void dmpReady() { // interrupt ready
-      _mpuFlag = true;
-    }
-    void tick() {
-      
-      if (_mpuFlag && mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) {
-        
-        // calculations
-        mpu.dmpGetQuaternion(&q, fifoBuffer);
-        mpu.dmpGetGravity(&gravity, &q);
-        mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-        _mpuFlag = false;
-      }
-    }
+  void calibrate() {
+    // Serial.println(mpu.getXAccelOffset());
+    // Serial.println(mpu.getYAccelOffset());
+    // Serial.println(mpu.getZAccelOffset());
+    // Serial.println(mpu.getXGyroOffset());
+    // Serial.println(mpu.getYGyroOffset());
+    // Serial.println(mpu.getZGyroOffset());
 
-    int getRotationX(){
-      return degrees(ypr[2]);
-    }
-    int getRotationY(){
-      return degrees(ypr[1]);
-    }
-    int getRotationZ(){
-      return degrees(ypr[0]);
-    }
-    
-  private:
-    volatile bool _mpuFlag;
-    uint8_t fifoBuffer[45];
-    float ypr[3];
-    Quaternion q;
-    VectorFloat gravity;
-    MPU6050 mpu;
+    mpu.setXAccelOffset(1494);
+    mpu.setYAccelOffset(2163);
+    mpu.setZAccelOffset(1100);
+    mpu.setXGyroOffset(88);
+    mpu.setYGyroOffset(25);
+    mpu.setZGyroOffset(-6);
+  }
+
+  int get_angle() {
+    int16_t ax = mpu.getAccelerationX();  // ускорение по оси Х
+    int16_t ay = mpu.getAccelerationY();
+
+    ax = constrain(ax, -16384, 16384);  // ограничиваем +-1g
+    float angle_x = ax / 16384.0;       // переводим в +-1.0
+
+    ay = constrain(ay, -16384, 16384);  // ограничиваем +-1g
+    float angle_y = ay / 16384.0;       // переводим в +-1.0
+
+    int result = degrees(atan2f(angle_y, angle_x));
+
+    return result;
+  }
+
+private:
+  MPU6050 mpu;
 };
