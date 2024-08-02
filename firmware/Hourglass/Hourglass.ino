@@ -13,7 +13,7 @@
 #define CS_PIN2 5
 
 #define MAIN_PERIOD 100
-#define CLOCK_PERIOD 1350 // 1 minute
+#define CLOCK_PERIOD 1350  // 1 minute
 
 #define OFFSET 14
 
@@ -33,7 +33,6 @@ uint8_t new_buffer2[MATRIX_SIZE];
 
 void setup() {
   randomSeed(analogRead(A0));
-  Serial.begin(9600);
   Wire.begin();
 
   matrix1.begin();
@@ -43,10 +42,15 @@ void setup() {
   clear_matrix(1);
   clear_matrix(2);
 
-  fill();
+  delay(25); // giving gyroscope some time to start giving correct values
 
-  update_matrix(1);
-  update_matrix(2);
+  uint8_t top_matrix = get_top_matrix(get_gravity(gyro.get_angle()));
+  top_matrix = top_matrix == 0 ? random(1, 3) : top_matrix;
+
+  fill(top_matrix);
+
+  update_matrix(top_matrix);
+
 }
 
 Timer main_timer(MAIN_PERIOD);
@@ -63,7 +67,6 @@ void loop() {
 
   if (clock_timer.isReady()) {
     uint8_t top_matrix = get_top_matrix(get_gravity(gyro.get_angle()));
-    Serial.println(top_matrix);
 
     if (top_matrix == 1) {
       if (get_pixel(7, 0, 1) && !get_pixel(0, 0, 2)) {
@@ -77,5 +80,4 @@ void loop() {
       }
     }
   }
-
 }
