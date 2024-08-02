@@ -42,8 +42,8 @@ int8_t get_movement_direction(uint8_t x, uint8_t y, uint8_t gravity, uint8_t mat
 
       int8_t check_order_value = random(0, 2) ? 1 : -1;
 
-      if (!isObstacle(x, y, (GRAVITY_CHECK[gravity][0] + check_order_value) % 8, matrix_number)) return GRAVITY_CHECK[gravity][0] + check_order_value;
-      if (!isObstacle(x, y, (GRAVITY_CHECK[gravity][0] - check_order_value) % 8, matrix_number)) return GRAVITY_CHECK[gravity][0] - check_order_value;
+      if (!isObstacle(x, y, (GRAVITY_CHECK[gravity][0] + check_order_value) % 8, matrix_number)) return (GRAVITY_CHECK[gravity][0] + check_order_value) % 8;
+      if (!isObstacle(x, y, (GRAVITY_CHECK[gravity][0] - check_order_value) % 8, matrix_number)) return (GRAVITY_CHECK[gravity][0] - check_order_value) % 8;
 
       break;
     }
