@@ -2,7 +2,9 @@
 Electronic Hourglass
 
 :clapper: Youtube shorts link: https://www.youtube.com/shorts/0R3GjrOCUNI
-<img src = "/Images/Hourglass on.jpg">
+
+
+<img src = "/Images/Hourglass on.jpg" height = "500px">
 
 # Algorithm
 The main idea behind the algorithm is to check the spots on the matrix in the direction of potential movement. If the spot is empty, the particle moves there.
