@@ -12,7 +12,7 @@ The circle in which the hourglass can rotate gets divided in 16 segments and eve
 
 The algorithm doesn't require any floating point numbers or nested loops. All the possible directions are conveniently stored in FLASH and do not take any RAM space. This allows this algorithm to run on basically any microcontroller and show incredible performance even with higher resolution displays.
 
-<img src="/Images/Algorithm Image.png">
+<img src="/Images/Algorithm Image.PNG">
 
 # Schematic
 
